@@ -1,11 +1,6 @@
----
-title: "BaseConversionAssignment"
-author: "Ramesh Simhambhatla"
-date: "October 22, 2016"
-output: 
-  html_document:
-    keep_md: true
----
+# BaseConversionAssignment
+Ramesh Simhambhatla  
+October 22, 2016  
 
 # Introduction
 #### Following functions written for live session assignment 07.
@@ -22,7 +17,8 @@ output:
 #### Question 2 is answered first as Question 1 uses the function base10to7, and this needs to be
 #### executed first inorder to use it.
 
-```{r}
+
+```r
 base10to7<-function(x){
   i=0   #initialize iterator to 0
   sum=0 #intialize return value to 0
@@ -36,16 +32,21 @@ base10to7<-function(x){
   sum<-sum+((x%%7)*(10^i)) # caluculate final cumulative value 
   return(sum) #return converted value
 }
-
 ```
 #### Test base10to7 function
-```{r}
+
+```r
 base10to7(100)
+```
+
+```
+## [1] 202
 ```
 
 #### Question 3. Write a function base7to10 to covert base 7 to base 10 takes argument y
 
-```{r}
+
+```r
 base7to10 <-function(y){
   i=0   #initialize iterator to 0
   sum=0 #intialize return value to 0
@@ -62,13 +63,19 @@ base7to10 <-function(y){
 ```
 
 #### Test base7to10 function
-```{r}
+
+```r
 base7to10(202)
+```
+
+```
+## [1] 100
 ```
 
 #### Question 1. Wite a function (p7) that will will print first n numbers of base 7
 
-```{r}
+
+```r
 p7 <-function(x){
   i=0   #initialize iterator to 0
   y=0   #intialize vector to be used to collect numbers to 0
@@ -90,10 +97,32 @@ p7 <-function(x){
 ```
 
 #### Test getbase7nos function
-```{r}
+
+```r
 p7(5)
+```
+
+```
+## [1] 0 1 2 3 4
+```
+
+```r
 p7(15)
+```
+
+```
+##  [1]  0  1  2  3  4  5  6 10 11 12 13 14 15 16 20
+```
+
+```r
 p7(52)
+```
+
+```
+##  [1]   0   1   2   3   4   5   6  10  11  12  13  14  15  16  20  21  22
+## [18]  23  24  25  26  30  31  32  33  34  35  36  40  41  42  43  44  45
+## [35]  46  50  51  52  53  54  55  56  60  61  62  63  64  65  66 100 101
+## [52] 102
 ```
 
 ##Section2: Convert previous functions to be generic                                    
@@ -104,7 +133,8 @@ p7(52)
 
 #### Question4: Following functions provide base conversions for generic scalars (k=2,3,4...)
 
-```{r}
+
+```r
 # The function takes x as an input, and any base (default base=10)
 base10toAny<-function(x, baseAny=10){
   i=0   
@@ -121,13 +151,33 @@ base10toAny<-function(x, baseAny=10){
 ```
 #### Test base10toAny function
 
-```{r}
+
+```r
 base10toAny(100,7)
+```
+
+```
+## [1] 202
+```
+
+```r
 base10toAny(100,2)
+```
+
+```
+## [1] 1100100
+```
+
+```r
 base10toAny(100,5)
 ```
 
-```{r}
+```
+## [1] 400
+```
+
+
+```r
 # The function takes y as an input, and any base (default base=10)
 baseAnyto10 <-function(y, baseAny=10){
   i=0
@@ -143,11 +193,17 @@ baseAnyto10 <-function(y, baseAny=10){
 ```
 #### Test baseAnyto10 function
 
-```{r}
+
+```r
 baseAnyto10(202,7)
 ```
 
-```{r}
+```
+## [1] 100
+```
+
+
+```r
 # funtion to print first n numbers of any base (defalt base=10)
 pAny <-function(x, baseAny=10){
   i=0
@@ -169,9 +225,29 @@ pAny <-function(x, baseAny=10){
 ```
 
 #### Test pAny function
-```{r}
+
+```r
 pAny(15,7)
+```
+
+```
+##  [1]  0  1  2  3  4  5  6 10 11 12 13 14 15 16 20
+```
+
+```r
 pAny(15,2)
+```
+
+```
+##  [1]    0    1   10   11  100  101  110  111 1000 1001 1010 1011 1100 1101
+## [15] 1110
+```
+
+```r
 pAny(15,5)
+```
+
+```
+##  [1]  0  1  2  3  4 10 11 12 13 14 20 21 22 23 24
 ```
 ####  *** End of File ***
