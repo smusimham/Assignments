@@ -1,0 +1,130 @@
+---
+title: "Week 10 Live Session Assignment - Website Click Data"
+author: "Ramesh Simhambhatla"
+date: "November 13, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+
+# Introduction
+The purpose of this report to is to produce code and output for Week10 Live Session Assignment on the WebSite Click Data. The data set used in nyt1.csv
+
+####Load libraries used in this exercise
+```{r}
+library(plyr)
+library(dplyr)
+library(data.table)
+library(ggplot2) # used for visualizations
+```
+####The read the nyt1.csv from the columbia.edu site and store into a local data frame 'data1'
+```{r}
+fileLocation <- "http://stat.columbia.edu/~rachel/datasets/nyt1.csv"
+data1 <- read.csv(url(fileLocation))
+```
+
+####Explore the data using head, str, and summary functions
+```{r}
+head(data1) # reads top6 observations
+str(data1) # str stands for 'structure'
+summary(data1) # summary of the variables
+
+# distribution of the Age column
+hist(data1$Age, main="", xlab="Age")
+range(data1$Age)
+
+# distribution of the Impressions column
+hist(data1$Impressions, main="Distribution of the Impressions", xlab="# of Impressions")
+
+range(data1$Impressions)
+
+# distribution of the Clicks column
+hist(data1$Clicks, main="", xlab="# of Clicks")
+
+range(data1$Clicks)
+```
+
+####Create a new variable ageGroup that categorizes age into following groups: < 18, 18???24, 25???34, 35???44, 45???54, 55???64 and 65+.
+
+```{r}
+data1$Age_Group <- cut(data1$Age, c(-Inf, 18, 24, 34, 44, 54, 64, Inf))
+levels(data1$Age_Group) <- c("<18", "18-24", "25-34", "35-44", "45-54", "55-64", "65+")
+# Name the levels of 'Age_Group' for readability
+head(data1)
+```
+
+####Use sub set of data called ???ImpSub??? where Impressions > 0 ) in the data set.
+```{r}
+ImpSub <- subset(data1, Impressions>0) # create a subset for Impressions > 0
+ImpSub$CTR <- ImpSub$Clicks/ImpSub$Impressions
+head(ImpSub)
+```
+
+####Create a new variable called click-through-rate (CTR = click/impression).
+####Use this ImpSub data set to do further analysis.
+```{r}
+# Define a new variable to segment users based on click -through- rate (CTR) behavior.
+# CTR< 0.2, 0.2<=CTR <0.4, 0.4<= CTR<0.6, 0.6<=CTR<0.8, CTR>0.8
+ImpSub$CTRSeg <- cut(ImpSub$CTR, c(-Inf, 0.2, 0.4, 0.6, 0.8, Inf))
+levels(ImpSub$CTRSeg) <- c("0.0-0.2", "0.2-0.4", "0.4-0.6", "0.6-0.8", "0.8-0.1")
+head(ImpSub)
+```
+
+####Get the total number of Male, Impressions, Clicks and Signed_In (0=Female, 1=Male)
+```{r}
+ImpSubMale <- subset(ImpSub, ImpSub$Gender==1) # create a subset for Gender = 1(Male)
+sapply(ImpSubMale[, 2:5], sum) # output sum for columns 2 through 5
+```
+
+####Get the mean of Age, Impressions, Clicks, CTR and percentage of males and signed_In
+```{r}
+sapply(ImpSub[,c(1,3,4,7)], mean) # mean of Age, Impressions, Clicks, CTR
+pcntMales <- length(ImpSubMale$Gender)/length(ImpSub$Gender) # calculate percentage of Males
+pcntMales # print percentage of Males
+
+ImpSubSignedIn <- subset(ImpSub, ImpSub$Signed_In==1) # create subset for signed_in = 1 data
+pcntSignedIn <- length(ImpSubSignedIn$Signed_In)/length(ImpSub$Signed_In) # calculate the percent signed_in
+pcntSignedIn # output percent Signed In
+
+#summarise to print consolidted data for mean and percentages 
+summarise(ImpSub, mean(Age), mean(Impressions), mean(Clicks), mean(CTR), pcntMales, pcntSignedIn)
+```
+####Get the means of Impressions, Clicks, CTR and percentage of males and signed_In  by AgeGroup.
+```{r}
+dataVByAgeGroup <- ImpSub %>% 
+  group_by(Age_Group) %>% 
+  summarise(Impressions=mean(Impressions), CTR=mean(CTR), Clicks=mean(Clicks), 
+            pctSigned=sum(Signed_In==1)/length(Age_Group),
+            pctMales=sum(Gender==1)/length(Age_Group))
+
+dataVByAgeGroup
+```
+####Create a table of CTRGroup vs AgeGroup counts.
+```{r}
+countAgeGroup <- as.data.table(ddply(ImpSub, .(Age_Group), nrow))
+names(countAgeGroup)[2] <- "countAgeGroup"
+countAgeGroup
+
+countCTRGroup <- as.data.table(ddply(ImpSub, .(CTRSeg), nrow))
+names(countCTRGroup)[2] <- "countCTRGroup"
+countCTRGroup
+
+mergeCounts <- rbind(countCTRGroup, countAgeGroup, fill=TRUE)
+mergeCounts
+```
+
+#### Plot distributions of number impressions and click-through-rate (CTR = click/impression) for the age groups
+```{r}
+ggplot(subset(ImpSub, Impressions>0), aes(x=Impressions, fill=Age_Group)) +
+  geom_histogram(binwidth=1)
+
+ggplot(subset(ImpSub, CTR>0), aes(x=CTR, fill=Age_Group)) +
+  labs(title="Click-through rate by age group - for a Single Day") +
+  geom_histogram(binwidth=.025)
+  
+# Histogram of Clicks by Age
+ggplot(subset(ImpSub, Age>0), aes(x=Age, fill=Age_Group)) +
+  labs(title="Clicks by Age - for a Single Day") +
+  geom_histogram(binwidth=0.5)
+```
+####**** End of File ****
