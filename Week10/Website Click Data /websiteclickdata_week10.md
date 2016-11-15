@@ -67,7 +67,7 @@ library(data.table)
 ```r
 library(ggplot2) # used for visualizations
 ```
-####The read the nyt1.csv from the columbia.edu site and store into a local data frame 'data1'
+####Read the nyt1.csv from the columbia.edu site and store into a local data frame 'data1'
 
 ```r
 fileLocation <- "http://stat.columbia.edu/~rachel/datasets/nyt1.csv"
@@ -126,7 +126,7 @@ summary(data1) # summary of the variables
 
 ```r
 # distribution of the Age column
-hist(data1$Age, main="", xlab="Age")
+hist(data1$Age, main="Histogram for Age", xlab="Age")
 ```
 
 ![](websiteclickdata_week10_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
@@ -153,23 +153,9 @@ range(data1$Impressions)
 ```
 ## [1]  0 20
 ```
+####Observation: About 40% of observation have Age=0, means Age not availble for those observations. The number of clicks are normally distributed in the range of 0 to 10.
 
-```r
-# distribution of the Clicks column
-hist(data1$Clicks, main="", xlab="# of Clicks")
-```
-
-![](websiteclickdata_week10_files/figure-html/unnamed-chunk-3-3.png)<!-- -->
-
-```r
-range(data1$Clicks)
-```
-
-```
-## [1] 0 4
-```
-
-####Create a new variable ageGroup that categorizes age into following groups: < 18, 18???24, 25???34, 35???44, 45???54, 55???64 and 65+.
+####Create a new variable ageGroup that categorizes age into following groups: < 18, 18-24, 25-34, 35-44, 45-54, 55-64 and 65+.
 
 
 ```r
@@ -189,7 +175,7 @@ head(data1)
 ## 6  47      0          11      1         1     45-54
 ```
 
-####Use sub set of data called ???ImpSub??? where Impressions > 0 ) in the data set.
+####Use sub set of data called **ImpSub** where Impressions > 0 in the data set.
 
 ```r
 ImpSub <- subset(data1, Impressions>0) # create a subset for Impressions > 0
@@ -207,8 +193,7 @@ head(ImpSub)
 ## 6  47      0          11      1         1     45-54 0.09090909
 ```
 
-####Create a new variable called click-through-rate (CTR = click/impression).
-####Use this ImpSub data set to do further analysis.
+####Create a new variable called click-through-rate (CTR = click/impression). Use this ImpSub data set to do further analysis.
 
 ```r
 # Define a new variable to segment users based on click -through- rate (CTR) behavior.
