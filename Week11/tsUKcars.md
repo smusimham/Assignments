@@ -5,7 +5,7 @@ November 19, 2016
 #Introduction
 The following exercise is to demonstrate the using and analyzing ukcars timeseries data using fpp package
 
-### Install and load 'fpp; package
+### Install and load 'fpp' package
 
 ```r
 #install.packages("fpp")
@@ -78,6 +78,7 @@ plot(fitd)
 ```
 
 ![](tsUKcars_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 Seasonal trends shows very consistent pattern, ranges between -40 and 10, however the trend cycle show a linear uptrend with a change in patterns couple of times, and with some fluctuations (peaks and troughs)
 
 ###c)	Do the results support the graphical interpretation from part (a)? 
@@ -88,6 +89,7 @@ plot(fit)
 ```
 
 ![](tsUKcars_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
 Yes, the results mostly support the graphical interpretation of the original plot. The graphs shows
 seasonal fluctuations with linear upward trend between 1980 and 2000. 
 
@@ -125,6 +127,7 @@ plot(ukcars4, main="ukcars data with outlier at center of the observations")
 ```
 
 ![](tsUKcars_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
 The outlier skewed the seasonal pattern more narrower and consistent range. No significant difference observed with overall trends whether the outlier at start, middle or end of the series.
 
 
